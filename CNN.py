@@ -13,6 +13,10 @@ classifier.add(Conv2D(32, (3, 3), input_shape = (64, 64, 3), activation = 'relu'
 # 2. Add Pooling layer - this reduces the size of the feature maps
 classifier.add(MaxPooling2D(pool_size = (2, 2)))
 
+# Add second Convolution layer
+classifier.add(Conv2D(32, (3, 3), activation = 'relu'))
+classifier.add(MaxPooling2D(pool_size = (2, 2)))
+
 # 3. Add Flattening layer - take pooled feature map and flatten it to single dimension
 classifier.add(Flatten())
 
@@ -25,7 +29,6 @@ classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = [
 
 # Fitting CNN to Images
 from keras.preprocessing.image import ImageDataGenerator
-
 
 train_datagen = ImageDataGenerator(
         rescale=1./255,
@@ -42,10 +45,10 @@ training_set = train_datagen.flow_from_directory(
         class_mode='binary')
 
 test_set = test_datagen.flow_from_directory(
-        'Datasets/Convolutional_Neural_Networks/dataset/test_set',
-        target_size=(64, 64),
-        batch_size=32,
-        class_mode='binary')
+            'Datasets/Convolutional_Neural_Networks/dataset/test_set',
+            target_size=(64, 64),
+            batch_size=32,
+            class_mode='binary')
 
 classifier.fit_generator(
         training_set,
